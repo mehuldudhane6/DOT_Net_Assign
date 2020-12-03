@@ -4,153 +4,217 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace Assignment1
+namespace Assignment2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Employee o1 = new Employee("Akash", 123465, 10);
-            o1.getNetSalary();
-            Employee o2 = new Employee("Akshay", 13536623344);
-            o2.getNetSalary();
-            Employee o3 = new Employee("amol");
-            o3.getNetSalary();
-            Employee o4 = new Employee();
-            o4.getNetSalary();
-            Employee o5 = new Employee("mehul", 163465, -1);
-            o5.getNetSalary();
-            Console.WriteLine(o1.Empno);
-            Console.WriteLine(o2.Empno);
-            Console.WriteLine(o3.Empno);
-            Console.WriteLine(o4.Empno);
-            Console.WriteLine(o5.Empno);
-            Console.WriteLine("======================++");
-            Console.WriteLine(o4.Empno);
-            Console.WriteLine(o3.Empno);
-            Console.WriteLine(o2.Empno);
-            Console.WriteLine(o1.Empno);
-            Console.WriteLine(o5.Empno);
+            Employee e1= new Manager();
+            Employee e2 = new Manager();
+            Employee e3 = new Manager();
+            Console.WriteLine(e1.Empno);
+            Console.WriteLine(e2.Empno);
+            Console.WriteLine(e3.Empno);
+            Console.WriteLine("==============================");
+            Console.WriteLine(e3.Empno);
+            Console.WriteLine(e2.Empno);
+            Console.WriteLine(e1.Empno);
         }
     }
 
-    public class Employee
+    public abstract class Employee
     {
         private string name;
         private int empNo;
-        private decimal basic;
         private short deptNo;
-        private static int count = 0;
-        public double incomeTax = 0.5;
-        public double pTax = 0.6;
-
+        public  decimal basic;
+        public static int count=0;
 
         public Employee()
         {
+            this.Name = "mehul";
             count++;
-            this.Name = " ";
-            this.empNo = count;
-        }
-        public Employee(String n, decimal b, short d)
-        {
-            count++;
-            this.empNo = count;
-            this.Name = n;
-            this.Basic = b;
-            this.DeptNo= d;
+            this.Empno = count;
+            this.Deptno = 0;
+            this.Basic = 25000;
+            
         }
 
-        public Employee(String name, decimal basic)
+        public Employee(string name, int empNo, short deptNo, decimal basic)
         {
             count++;
-            this.empNo = count;
+            this.Empno = count;
             this.Name = name;
+            this.Empno = empNo;
+            this.Deptno = deptNo;
             this.Basic = basic;
-            this.DeptNo = 0;
-
-        }
-        public Employee(String name)
-        {
-            count++;
-            this.empNo = count;
-            this.Name = name;
-            this.Basic = 0;
-            this.DeptNo = 0;
-        }
-        public string Name
-        {
-            set {
-                if (value == " " || value == null)
-                {
-                    Console.WriteLine("plz...enter some value");
-                }
-                else {
-                    name = value;
-                }
-            }
-
-            get {
-                return name;
-            }
-        }
-
-        public int Empno
-        {
-            get {
-                return empNo;
-            }
         }
 
         public decimal Basic
         {
             set
             {
-                if (value>10000)
+                Basic = value;
+            }
+            get
+            {
+                return Basic;
+            }
+        }
+        public string Name
+        {
+            set 
+            {
+                if (value == " " || value == null)
                 {
                     
-                    basic = value;
+                    Console.WriteLine("name cannot be blank");
                 }
                 else
                 {
-                    Console.WriteLine("enter value greater than 10000");
+                    name = value;
                 }
             }
 
-            get
+            get 
             {
-                return basic;
+                return name; 
             }
         }
 
-        public short DeptNo
+        public int Empno
         {
-            set
-            {
+             private set {
+               
+                empNo=value;
+            }
+
+            get {
+                return empNo;
+            }
+        }
+
+        public short Deptno
+        {
+            set {
                 if (value > 0)
                 {
-
+                    
                     deptNo = value;
                 }
                 else
                 {
-                    Console.WriteLine("deprt no. should be greater than 0");
+                    Console.WriteLine("plz..enter vlid value");
                 }
             }
 
-            get
+            get 
             {
                 return deptNo;
             }
         }
+        
+        public  abstract void calcNetSalary();
+    }
+
+    public class Manager : Employee
+    {
+
+        private string designation;
 
 
-        public void  getNetSalary()
+
+        public Manager()
         {
-            double salary = (double)this.Basic + ((double)this.Basic * incomeTax) - ((double)this.Basic * pTax);
-            
-            Console.WriteLine("net salary="+salary);
+            this.Designation = designation;
         }
-     
+        public Manager(string n, int e, short d, decimal b,string designation):base(n,e,d,b)
+        {
+            this.Designation = designation;
+        }
+
+
+        public decimal Basic
+        {
+            set {
+                Basic = value;
+            }
+            get {
+                return Basic;
+            }
+        }
+        public string Designation
+        {
+                set {
+                    if (value == " ")
+                    {
+                        Console.WriteLine("can't be empty");
+                    }
+                    else {
+                        designation = value;
+                    }
+                }
+
+                get {
+                    return designation;
+                }
+        }
+        public override void calcNetSalary()
+        {
+            Console.WriteLine("this is manager netsalary method ");
+        }
+    }
+
+    public class GeneralManager : Manager
+    {
+        private string perks;
+
+        public decimal Basic
+        {
+            set
+            {
+                Basic = value;
+            }
+            get
+            {
+                return Basic;
+            }
+        }
+        public GeneralManager(string n, int e, short d, decimal b, string d1,string perks) : base(n, e, d, b,d1)
+        {
+            this.perks = perks;
+        }
+
+        public  override void calcNetSalary()
+        {
+            Console.WriteLine("this is Generalmanager netsalary method ");
+        }
+
+    }
+
+    public class CEO : Employee
+    {
+
+        public CEO()
+        {
+
+        }
+
+        public decimal Basic
+        {
+            set
+            {
+                Basic = value;
+            }
+            get
+            {
+                return Basic;
+            }
+        }
+        public sealed override void calcNetSalary()
+        {
+            Console.WriteLine("this is CEO netsalary method ");
+        }
     }
 }
