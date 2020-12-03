@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment2
+namespace Assignment3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Employee e1= new Manager();
+            Employee e1 = new Manager();
             Employee e2 = new Manager();
             Employee e3 = new Manager();
             Console.WriteLine(e1.Empno);
@@ -23,13 +23,19 @@ namespace Assignment2
         }
     }
 
-    public abstract class Employee
+
+    interface IDBFunctions
+    {
+        void display();
+        void insertt();
+    }
+    public abstract class Employee:IDBFunctions
     {
         private string name;
         private int empNo;
         private short deptNo;
         public  decimal basic;
-        public static int count=0;
+        public static int count = 0;
 
         public Employee()
         {
@@ -38,7 +44,7 @@ namespace Assignment2
             this.Empno = count;
             this.Deptno = 0;
             this.Basic = 25000;
-            
+
         }
 
         public Employee(string name, int empNo, short deptNo, decimal basic)
@@ -51,24 +57,19 @@ namespace Assignment2
             this.Basic = basic;
         }
 
-        public decimal Basic
+        public abstract decimal Basic
         {
-            set
-            {
-                Basic = value;
-            }
-            get
-            {
-                return Basic;
-            }
+            set;
+            get;
+      
         }
         public string Name
         {
-            set 
+            set
             {
                 if (value == " " || value == null)
                 {
-                    
+
                     Console.WriteLine("name cannot be blank");
                 }
                 else
@@ -77,30 +78,33 @@ namespace Assignment2
                 }
             }
 
-            get 
+            get
             {
-                return name; 
+                return name;
             }
         }
 
         public int Empno
         {
-             private set {
-               
-                empNo=value;
+            private set
+            {
+
+                empNo = value;
             }
 
-            get {
+            get
+            {
                 return empNo;
             }
         }
 
         public short Deptno
         {
-            set {
+            set
+            {
                 if (value > 0)
                 {
-                    
+
                     deptNo = value;
                 }
                 else
@@ -109,68 +113,43 @@ namespace Assignment2
                 }
             }
 
-            get 
+            get
             {
                 return deptNo;
             }
         }
-        
-        public  abstract void calcNetSalary();
+
+        public abstract void calcNetSalary();
+
+        public void display()
+        {
+            Console.WriteLine("displaym method");
+        }
+
+        public void insertt()
+        {
+            Console.WriteLine("insert method");
+        }
     }
 
-    public class Manager : Employee
+    public class Manager : Employee, IDBFunctions
     {
 
         private string designation;
 
-
+        
 
         public Manager()
         {
             this.Designation = designation;
         }
-        public Manager(string n, int e, short d, decimal b,string designation):base(n,e,d,b)
+        public Manager(string n, int e, short d, decimal b, string designation) : base(n, e, d, b)
         {
             this.Designation = designation;
         }
 
 
-        public decimal Basic
-        {
-            set {
-                Basic = value;
-            }
-            get {
-                return Basic;
-            }
-        }
-        public string Designation
-        {
-                set {
-                    if (value == " ")
-                    {
-                        Console.WriteLine("can't be empty");
-                    }
-                    else {
-                        designation = value;
-                    }
-                }
-
-                get {
-                    return designation;
-                }
-        }
-        public override void calcNetSalary()
-        {
-            Console.WriteLine("this is manager netsalary method ");
-        }
-    }
-
-    public class GeneralManager : Manager
-    {
-        private string perks;
-
-        public decimal Basic
+        public override decimal Basic
         {
             set
             {
@@ -181,19 +160,62 @@ namespace Assignment2
                 return Basic;
             }
         }
-        public GeneralManager(string n, int e, short d, decimal b, string d1,string perks) : base(n, e, d, b,d1)
+        public string Designation
+        {
+            set
+            {
+                if (value == " ")
+                {
+                    Console.WriteLine("can't be empty");
+                }
+                else
+                {
+                    designation = value;
+                }
+            }
+
+            get
+            {
+                return designation;
+            }
+        }
+
+       
+
+        public override void calcNetSalary()
+        {
+            Console.WriteLine("this is manager netsalary method ");
+        }
+    }
+
+    public class GeneralManager : Manager, IDBFunctions
+    {
+        private string perks;
+
+        public override decimal Basic
+        {
+            set
+            {
+                Basic = value;
+            }
+            get
+            {
+                return Basic;
+            }
+        }
+        public GeneralManager(string n, int e, short d, decimal b, string d1, string perks) : base(n, e, d, b, d1)
         {
             this.perks = perks;
         }
 
-        public  override void calcNetSalary()
+        public override void calcNetSalary()
         {
             Console.WriteLine("this is Generalmanager netsalary method ");
         }
 
     }
 
-    public class CEO : Employee
+    public class CEO : Employee, IDBFunctions
     {
 
         public CEO()
@@ -201,7 +223,7 @@ namespace Assignment2
 
         }
 
-        public decimal Basic
+        public override decimal Basic
         {
             set
             {
